@@ -1,3 +1,5 @@
+//c3c compile raytracer.c3 ppm.c3 def.c3 ray.c3 sphere.c3 hittable.c3
+
 import std::io;
 import ppm;
 import ray;
@@ -12,7 +14,6 @@ fn ppm::Color ray_color(Ray* ray, HittableList* world) {
     HitRecord hit_record;
 
     if(world.hit(ray, 0.0, double.max, &hit_record)) {
-    io::printf("%f %f %f\n", hit_record.n.x, hit_record.n.y, hit_record.n.z);
         return 0.5*(hit_record.n + 1.0);
     }
 
@@ -50,16 +51,15 @@ fn void main() {
 
     (void) ppm::write_header(&image_output, width, height);
 
-
     for(int y = 0; y < height; y++) {
         for(int x = 0; x < width; x++) {
-	    rt::Vec3 pixel_center = pixel00_loc + (x * pixel_delta_u) + (y * pixel_delta_v);
-	    rt::Vec3 ray_direction = pixel_center - camera_center;
+            rt::Vec3 pixel_center = pixel00_loc + (x * pixel_delta_u) + (y * pixel_delta_v);
+            rt::Vec3 ray_direction = pixel_center - camera_center;
 
-	    Ray ray = {camera_center, ray_direction};
+            Ray ray = {camera_center, ray_direction};
 
-	    ppm::Color pixel_color = ray_color(&ray, &world);
-	    (void) ppm::write_color(&image_output, pixel_color);
-	}
+            ppm::Color pixel_color = ray_color(&ray, &world);
+            (void) ppm::write_color(&image_output, pixel_color);
+	    }
     }
 }

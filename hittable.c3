@@ -19,14 +19,13 @@ interface IHittable {
     fn bool hit(Ray* ray, double t_min, double t_max, HitRecord* hit_record);
 }
 
+struct HittableList (IHittable) {
+    List(<Sphere>) objects;
+}
 
 fn void HitRecord.set_face_normal(HitRecord* this, Ray* ray, rt::Vec3 out_normal){
     this.front_face = ray.direction.dot(out_normal) < 0.0;
     this.n = this.front_face ? out_normal : -out_normal;
-}
-
-struct HittableList (IHittable) {
-    List(<Sphere>) objects;
 }
 
 fn void HittableList.clear(HittableList* this) {
